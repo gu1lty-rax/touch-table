@@ -1,9 +1,31 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+
+interface MenuItem {
+  id: number;
+  name: string;
+  price: string;
+  desc: string;
+  image: string;
+  is_available: boolean;
+}
+
 export default function CafeMenu() {
-  const menuItems = [
-    { id: 1, name: "楽しい選べるランチ♪", desc: "3種類から選べるスープランチ", price: "1,100", image: "https://images.unsplash.com/photo-1547592166-23ac45744acd?w=500&q=80" },
-    { id: 2, name: "日替わりランチ", desc: "新鮮野菜のプレート", price: "850", image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500&q=80" },
-    { id: 3, name: "鶏むね肉とサラダプレート", desc: "ヘルシーでボリューム満点", price: "800", image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&q=80" },
-  ];
+  const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
+  const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000';
+
+  useEffect(() => {
+    // Simulate an API call to fetch menu items
+    const fetchMenuItems = async () => {
+      const response = await fetch(`${baseUrl}/api/menu`);
+      const data = await response.json();
+      setMenuItems(data);
+    };
+
+    fetchMenuItems();
+  }, []);
+
 
   return (
     <div className="max-w-md mx-auto min-h-screen bg-white">
